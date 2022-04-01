@@ -5,6 +5,7 @@ namespace BallArt_API.Models
 {
     public class User
     {
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
