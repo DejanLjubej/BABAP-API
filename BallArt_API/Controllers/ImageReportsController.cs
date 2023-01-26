@@ -21,7 +21,7 @@ namespace BallArt_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ImageReport>>> GetImageReports()
         {
-            return await _context.ImageReports.ToListAsync();
+            return await _context.ImageReports.AsNoTracking().ToListAsync();
         }
 
         // GET: api/ImageReports/5

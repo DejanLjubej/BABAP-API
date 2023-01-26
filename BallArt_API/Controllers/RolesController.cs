@@ -21,7 +21,12 @@ namespace BallArt_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
-            return await _context.Roles.ToListAsync();
+            return await _context.Roles.AsNoTracking().ToListAsync();
+        }
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<Role>>> GetRolesWithUsers()
+        {
+            return await _context.Roles.AsNoTracking().Include(r => r.Users).ToListAsync();
         }
 
         // GET: api/Roles/5

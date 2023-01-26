@@ -21,7 +21,7 @@ namespace BallArt_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CommentReport>>> GetCommentReport()
         {
-            return await _context.CommentReport.ToListAsync();
+            return await _context.CommentReport.AsNoTracking().ToListAsync();
         }
 
         // GET: api/CommentReports/5

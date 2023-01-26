@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BallArt_API.Models
 {
@@ -6,12 +7,11 @@ namespace BallArt_API.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        [MaxLength(500)]
         public string Message { get; set; }
 
         // Foreign Keys
         public Guid UserId { get; set; }
-        public User User { get; set; }
         public Guid ImageId { get; set; }
-        public Image Image { get; set; }
     }
 }

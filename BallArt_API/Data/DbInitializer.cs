@@ -27,7 +27,6 @@ namespace BallArt_API.Data
             {
                 new User
                 {
-                    Id=new Guid(),
                     Name="Best User",
                     Score=0,
                     DateJoined=DateTime.Now,
@@ -37,7 +36,6 @@ namespace BallArt_API.Data
                 },
                 new User
                 {
-                    Id=new Guid(),
                     Name="Not Best User",
                     Score=10,
                     DateJoined=DateTime.Now,
@@ -49,6 +47,31 @@ namespace BallArt_API.Data
             foreach (User user in users)
             {
                 context.Users.Add(user);
+            }
+            context.SaveChanges();
+
+            var images = new Image[]
+            {
+                new Image
+                {
+                    Uri = "https://imgur.com/QoSJeTW",
+                    Score = 0,
+                    Description = "Rushing Human Beast",
+                    DatePosted=DateTime.Now,
+                    UserId = new Guid("08da164e-a8bd-4d45-8cc0-c9ec8ec8a4f4")
+                },
+                 new Image
+                {
+                    Uri = "https://imgur.com/gallery/4VkGcVG",
+                    Score = 0,
+                    Description = "Rush to Bel-Air",
+                    DatePosted=DateTime.Now,
+                    UserId = new Guid("08da164e-a8bd-4d45-8cc0-c9ec8ec8a4f4")
+                }
+            };
+            foreach(Image image in images)
+            {
+                context.Images.Add(image);
             }
             context.SaveChanges();
             context.Dispose();

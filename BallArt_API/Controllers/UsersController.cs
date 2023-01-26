@@ -21,11 +21,11 @@ namespace BallArt_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.AsNoTracking().ToListAsync();
         }
 
-        // GET: api/Users/5
-        [HttpGet("{id}")]
+        // GET: api/Users/user/08da164e-a8bd-4d45-8cc0-c9ec8ec8a4f4
+        [HttpGet("user/{id}")]
         public async Task<ActionResult<User>> GetUser(Guid id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -36,6 +36,19 @@ namespace BallArt_API.Controllers
             }
 
             return user;
+        }
+
+        //Get: api/users/role/admin
+        [HttpGet("role/{role}")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUserByRole(int role){
+
+            var allUsers = await _context.Users.AsNoTracking().Where(u => u.RoleId == role).ToListAsync();          
+            
+            if(allUsers == null){
+                return NotFound("No users found");
+            }
+
+            return allUsers;
         }
 
         // PUT: api/Users/5
@@ -80,14 +93,14 @@ namespace BallArt_API.Controllers
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<User>> PostRole(Role role)
-        {
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
+        // [HttpPost]
+        // public async Task<ActionResult<User>> PostRole(Role role)
+        // {
+        //     _context.Roles.Add(role);
+        //     await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRole", new { id = role.Id }, role);
-        }
+        //     return CreatedAtAction("GetRole", new { id = role.Id }, role);
+        // }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]

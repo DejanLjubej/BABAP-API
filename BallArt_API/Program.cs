@@ -1,6 +1,8 @@
 using BallArt_API.Data;
 using Microsoft.EntityFrameworkCore;
 
+var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,9 +19,21 @@ builder.Services.AddDbContext<BallArtDataContext>(options =>
 
 });
 
+// Enable Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: myAllowSpecificOrigins,
+       builder =>
+       {
+           builder.WithOrigins("http://localhost:4200")
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+       });
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 var app = builder.Build();
@@ -33,6 +47,8 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
@@ -53,6 +69,8 @@ using (var scope = app.Services.CreateScope())
 }
 app.UseHttpsRedirection();
 
+app.UseCors(myAllowSpecificOrigins);
+
 app.UseAuthorization();
 
 app.MapControllers();
@@ -61,41 +79,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-
-/// <summary>
-/// /////////////////////////////////////////////////////
-/// </summary>
-//var host = CreateHostBuilder(args).Build();
-
-//CreateDbIfNotExist(host);
-
-//host.Run();
-
-//static void CreateDbIfNotExist(IHost host)
-//{
-//    using(var scope = host.Services.CreateScope())
-//    {
-//        var services = scope.ServiceProvider;
-//        try
-//        {
-//            var context = services.GetRequiredService<BallArtDataContext>();
-//            DbInitializer.Initialize(context);
-//        }catch(Exception ex)
-//        {
-//            var logger = services.GetRequiredService<ILogger<Program>>();
-//            logger.LogError(ex, "An Error occured creating the DB.");
-//        }
-//    }
-//}
-
-//static IHostBuilder CreateHostBuilder(string[] args) =>
-//    Host.CreateDefaultBuilder(args)
-//    .ConfigureWebHostDefaults(builder =>
-//    {
-//        builder.UseStartup<IStartup>();
-//    });
-/// <summary>
-/// //////////////////////////////////////////////////////
-/// </summary>
 

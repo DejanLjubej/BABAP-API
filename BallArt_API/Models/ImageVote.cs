@@ -10,8 +10,6 @@ namespace BallArt_API.Models
 
         // Foreign Keys
         public Guid UserId { get; set; }
-        public User User { get; set; }
         public Guid ImageId { get; set; }
-        public Image Image { get; set; }
     }
 }
